@@ -1,0 +1,41 @@
+import profesionales.*
+import universidad.*
+import empresas.*
+
+//instnacio universidades
+const universidadSanMartin = new Universidad(provincia = "buenosAires", honorariosPorHora = 3500)
+const universidadRosario = new Universidad(provincia = "santaFe", honorariosPorHora = 2800)
+const universidadCorrientes = new Universidad(provincia = "corrientes", honorariosPorHora = 4200)
+const universidadHurlingam = new Universidad(provincia = "buenosAires", honorariosPorHora = 8800)
+
+//instancio profesionales
+const juana = new ProfesionalVinculado(universidad = universidadRosario)
+const melina = new ProfesionalAsociado(universidad = universidadCorrientes)
+const rocio = new ProfesionalLibre(universidad = universidadHurlingam, provincias = ["santaFe","cordoba","buenosAires"], honorarios = 5000)
+const luciana = new ProfesionalLibre(universidad = universidadRosario, provincias = ["santaFe","entreRios"], honorarios = 3200)
+
+//instancio empresas
+const empresa = new Empresa(profesionales = [juana,melina,rocio,luciana], honorarioReferencia = 3500)
+
+test "cuantos estudiaron en cada universidad"{
+	assert.equals(0,empresa.cuantosEstudiaronEn(universidadSanMartin))
+	assert.equals(2,empresa.cuantosEstudiaronEn(universidadRosario))
+	assert.equals(1,empresa.cuantosEstudiaronEn(universidadHurlingam))
+	assert.equals(1,empresa.cuantosEstudiaronEn(universidadCorrientes))
+}
+
+test "donde estudiaron los profesionales de empresa" {
+	assert.equals(#{universidadRosario,universidadHurlingam,universidadCorrientes},empresa.universidadesFormadoras())
+}
+
+test "solo rocio es profesional caro"{
+	assert.equals(#{rocio},empresa.profesionalesCaros())
+}
+
+test "juana es el profesional más barato"{
+	assert.equals(juana,empresa.profesionalMasBarato())
+}
+
+test "la empresa no es acotada"{
+	assert.notThat(empresa.esDeGenteAcotada())
+}
